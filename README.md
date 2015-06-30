@@ -1,6 +1,6 @@
-*spectralhash-scala* is an implementation of the spectral hash (curr. draft version 1) specification in Scala. It is a modular library with simple immutable models for efficient use and extensibility.
+*spectralhash-scala* is an implementation of the spectral hash specification (curr. draft version 1) in Scala. It is a modular library with simple immutable models for efficient use and extensibility.
 
-The output hash will be in the format `<prefix>-<hash value>-<version #>`.
+The output hash will be in the format `<hash value>-<version #>` or `<prefix>-<hash value>-<version #>`.
 
 ### Installation
 
@@ -24,14 +24,15 @@ val peakPairs: String = /* ... */
 
 // 1. Use directly as an object
 val parseResult = Version1SpectralHashGenerator.generateSpectralHash(peakPairs)
+  // or Version1SpectralHashGenerator.generateSpectralHash(peakPairs, Some("prefix"))
 parseResult match {
-  case Success(hash) => // Use hash value "v1-(hash value)"
+  case Success(hash) => // Use hash value
   case Failure(err) => // Handle parsing errors
 }
 
 // 2. Mixin trait to your class
 class MyApp with Version1SpectralHashGenerator {
-  val parseResult = generateSpectralHash(peakPairs, Some("prefix"))
+  val parseResult = generateSpectralHash(peakPairs)
   ...
 }
 ```
@@ -45,7 +46,7 @@ import scala.util.Try;
 
 String peakPairs = /* ... */;
 Try<SpectralHash> parseResult = Version1SpectralHashGenerator.generateSpectralHash(peakPairs);
-// or Version1SpectralHashGenerator.generateSpectralHash(peakPairs, "prefix");
+  // or Version1SpectralHashGenerator.generateSpectralHash(peakPairs, "prefix");
 if (parseResult.isSuccess()) // Use hash value
 else // Handle parsing errors
 ```
@@ -58,18 +59,20 @@ else // Handle parsing errors
 
 ### Custom unmarshallers
 
-Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `SpectrumUnmarshaller` and implement the `unmarshal(input: T): Try[Seq[(Double, Double)]]` function.
+Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `SpectrumUnmarshaller` and implement the function
+
+  `unmarshal(input: T): Try[Seq[(Double, Double)]]`
 
 For example,
 
 ```scala
 trait JsonUnmarshaller extends SpectrumUnmarshaller[JsArray] {
   def unmarshal(input: JsArray) = Try {
-    /* Convert JSON data into Seq[(Double, Double)] */
+    /* Convert JSON array into Seq[(Double, Double)] */
   }
 }
 
-class MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { /* ... */ }
+class MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { ... }
 ```
 
 ### Custom hash algorithm
