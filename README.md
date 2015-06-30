@@ -45,7 +45,8 @@ import com.github.rfmejia.spectralhash.java.generators.Version1SpectralHashGener
 import scala.util.Try;
 
 String peakPairs = /* ... */;
-Try<SpectralHash> parseResult = Version1SpectralHashGenerator.generateSpectralHash(peakPairs);
+Try<SpectralHash> parseResult = 
+  Version1SpectralHashGenerator.generateSpectralHash(peakPairs);
   // or Version1SpectralHashGenerator.generateSpectralHash(peakPairs, "prefix");
 if (parseResult.isSuccess()) // Use hash value
 else // Handle parsing errors
@@ -55,9 +56,7 @@ else // Handle parsing errors
 
 ### Advanced usage
 
-*(TODO)*
-
-### Custom unmarshallers
+#### Custom unmarshallers
 
 Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `SpectrumUnmarshaller` and implement the function
 
@@ -75,6 +74,6 @@ trait JsonUnmarshaller extends SpectrumUnmarshaller[JsArray] {
 class MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { ... }
 ```
 
-### Custom hash algorithm
+#### Custom hash algorithm
 
 *(TODO)*
