@@ -62,11 +62,16 @@ class SpectralHashVersion1Spec extends FlatSpec with Matchers with Version1Spect
   }
 
   "The hash generator" should "generate the correct hash according to version 1 of the spec" in {
-    val result = generateSpectralHash(sample2)
-    inside(result) {
+    inside(generateSpectralHash(sample2)) {
       case Success(hash) =>
-        hash.toString shouldEqual "v1-0694872332ebf2149cfc461b6fcdd2b4d75048c4"
+        hash.toString shouldEqual "0694872332ebf2149cfc461b6fcdd2b4d75048c4-1"
     }
+
+    inside(generateSpectralHash(sample2, prefix = Some("source"))) {
+      case Success(hash) =>
+        hash.toString shouldEqual "source-0694872332ebf2149cfc461b6fcdd2b4d75048c4-1"
+    }
+
   }
 }
 

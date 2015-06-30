@@ -11,8 +11,8 @@ trait SpectralHashGenerator {
   /** Hash algorithm name supported by @java.security.MessageDigest. */
   val hashAlgorithm: String
 
-  def buildHash(peaks: Seq[(Double, Double)]): Try[SpectralHash] =
-    hashPeaks(peaks).map(hash => SpectralHash(version, hash))
+  def buildHash(peaks: Seq[(Double, Double)], prefix: Option[String]): Try[SpectralHash] =
+    hashPeaks(peaks).map(hash => SpectralHash(version, hash, prefix))
 
   /** Convert a sequence of peaks into a hash byte string. */
   def hashPeaks(peaks: Seq[(Double, Double)]): Try[Array[Byte]]
@@ -23,7 +23,6 @@ trait SpectralHashGenerator {
 
 /** Generates a SHA1 hash from a sequence of peak pairs using the standard encoding rules from version 1 of the spectral hash specification document. */
 trait SHA1HashGenerator extends SpectralHashGenerator {
-  val version = 1
   val hashAlgorithm = "SHA1"
 
   def hashPeaks(peaks: Seq[(Double, Double)]): Try[Array[Byte]] = Try {

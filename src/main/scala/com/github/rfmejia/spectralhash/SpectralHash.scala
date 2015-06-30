@@ -14,7 +14,7 @@ trait HashStringOps {
   }
 }
 
-case class SpectralHash(version: Int, hash: Array[Byte]) extends HashStringOps {
-  override val toString = s"v${version}-${bytesToHex(hash)}"
+case class SpectralHash(version: Int, hash: Array[Byte], prefix: Option[String]) extends HashStringOps {
+  override val toString = (prefix map (_ + "-") getOrElse "") + s"${bytesToHex(hash)}-${version}"
 }
 

@@ -10,7 +10,9 @@ import scala.util.Try
  *  SHA-1 algorithm. See version 1 of the spectral hash specification document.
  */
 trait Version1SpectralHashGenerator extends SHA1HashGenerator with BasicStringUnmarshaller {
-  def generateSpectralHash(input: String): Try[SpectralHash] = unmarshal(input) flatMap buildHash
+  val version = 1
+
+  def generateSpectralHash(input: String, prefix: Option[String] = None): Try[SpectralHash] = unmarshal(input) flatMap (peaks => buildHash(peaks, prefix))
 
   def encodePeaks(peaks: Seq[(Double, Double)]): String =
     peaks.map {

@@ -1,5 +1,7 @@
 *spectralhash-scala* is an implementation of the spectral hash (curr. draft version 1) specification in Scala. It is a modular library with simple immutable models for efficient use and extensibility.
 
+The output hash will be in the format `<prefix>-<hash value>-<version #>`.
+
 ### Installation
 
 *spectralhash-scala* is available as an [Scala Build Tool (sbt)](http://www.scala-sbt.org/) project. Clone the repository and run `sbt assembly` to generate a JAR file. You can choose between the following options:
@@ -29,7 +31,7 @@ parseResult match {
 
 // 2. Mixin trait to your class
 class MyApp with Version1SpectralHashGenerator {
-  val parseResult = generateSpectralHash(peakPairs)
+  val parseResult = generateSpectralHash(peakPairs, Some("prefix"))
   ...
 }
 ```
@@ -43,6 +45,7 @@ import scala.util.Try;
 
 String peakPairs = /* ... */;
 Try<SpectralHash> parseResult = Version1SpectralHashGenerator.generateSpectralHash(peakPairs);
+// or Version1SpectralHashGenerator.generateSpectralHash(peakPairs, "prefix");
 if (parseResult.isSuccess()) // Use hash value
 else // Handle parsing errors
 ```
