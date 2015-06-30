@@ -56,7 +56,22 @@ else // Handle parsing errors
 
 *(TODO)*
 
-### Adding unmarshallers
+### Custom unmarshallers
+
+Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `SpectrumUnmarshaller` and implement the `unmarshal(input: T): Try[Seq[(Double, Double)]]` function.
+
+For example,
+
+```scala
+trait JsonUnmarshaller extends SpectrumUnmarshaller[JsArray] {
+  def unmarshal(input: JsArray) = Try {
+    /* Convert JSON data into Seq[(Double, Double)] */
+  }
+}
+
+class MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { /* ... */ }
+```
+
+### Custom hash algorithm
 
 *(TODO)*
-
