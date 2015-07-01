@@ -56,9 +56,16 @@ else // Handle parsing errors
 
 ### Advanced usage
 
+To create a custom spectral hasher, implement a class or object that extends `generators.SpectralHashGenerator` with a hashing algorithm `hashing.PeakHasher` implementation and an input unmarshaller `unmarshalling.SpectrumUnmarshaller`.
+
+The library provides the following implementations:
+
+- Hashing: `hashing.MD5PeakHasher`, `hashing.SHA1HashGenerator` and `hashing.SHA256PeakHasher`. 
+- Unmarshalling: `unmarshalling.BasicStringUnmarshaller`
+
 #### Custom unmarshallers
 
-Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `SpectrumUnmarshaller` and implement the function
+Unmarshallers convert an input of type `T` into a sequence of peak pairs, if possible. To create a unmarshaller, extend the trait `unmarshalling.SpectrumUnmarshaller` and implement the function
 
   `unmarshal(input: T): Try[Seq[(Double, Double)]]`
 
@@ -71,9 +78,6 @@ trait JsonUnmarshaller extends SpectrumUnmarshaller[JsArray] {
   }
 }
 
-class MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { ... }
+object MySpectralHasher extends SHA1HashGenerator with JsonStringUnmarshaller { ... }
 ```
 
-#### Custom hash algorithm
-
-*(TODO)*
