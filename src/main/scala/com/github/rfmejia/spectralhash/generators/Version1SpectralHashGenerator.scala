@@ -1,6 +1,7 @@
 package com.github.rfmejia.spectralhash.generators
 
 import com.github.rfmejia.spectralhash.SpectralHash
+import com.github.rfmejia.spectralhash.hashing.SHA1PeakHasher
 import com.github.rfmejia.spectralhash.unmarshalling.BasicStringUnmarshaller
 import scala.util.Try
 
@@ -9,10 +10,13 @@ import scala.util.Try
  *  by (@com.github.rfmejia.spectralhash.BasicStringUnmarshaller) using a
  *  SHA-1 algorithm. See version 1 of the spectral hash specification document.
  */
-trait Version1SpectralHashGenerator extends SHA1HashGenerator with BasicStringUnmarshaller {
+trait Version1SpectralHashGenerator extends SpectralHashGenerator
+    with SHA1PeakHasher
+    with BasicStringUnmarshaller {
   val version = 1
 
-  def generateSpectralHash(input: String, prefix: Option[String] = None): Try[SpectralHash] = unmarshal(input) flatMap (peaks => buildHash(peaks, prefix))
+  def generateSpectralHash(input: String, prefix: Option[String] = None): Try[SpectralHash] =
+    unmarshal(input) flatMap (peaks => buildHash(peaks, prefix))
 
   def encodePeaks(peaks: Seq[(Double, Double)]): String =
     peaks.map {
