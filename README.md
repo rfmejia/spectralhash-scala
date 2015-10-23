@@ -1,3 +1,5 @@
+**Note:** This implementation has been discontinued. Wrappers to the official Java library are maintained in [berlinguyinca/spectra-hash](https://github.com/berlinguyinca/spectra-hash).
+
 *spectralhash-scala* is an implementation of the spectral hash specification (curr. draft version 1) in Scala. It is a modular library with simple immutable models for efficient use and extensibility.
 
 The output hash will be in the format `<hash value>-<version #>` or `<prefix>-<hash value>-<version #>`.
